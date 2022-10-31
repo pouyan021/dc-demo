@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/book_store
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      username: docker
+      password: docker
+      maximum-pool-size: 10
+      pool-name: book_store
+  jpa:
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: true
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: true
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/db/changelog/31-01-changelog.xml
+

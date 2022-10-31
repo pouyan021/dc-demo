@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <property name="now" value="now()" dbms="postgresql"/>
+    <changeSet id="0001_book_table" author="pouyankhodabakhsh">
+        <preConditions>
+            <not>
+                <tableExists tableName="book"/>
+            </not>
+        </preConditions>
+        <createTable tableName="book">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="text"/>
+            <column name="description" type="text"/>
+            <column name="publishing_date" type="datetime"/>
+            <column name="price" type="int"/>
+            <column name="author_id" type="bigserial"/>
+        </createTable>
+        <createIndex tableName="book" indexName="IDX_book_Id">
+            <column name="id" type="bigserial"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="0002_author_table" author="pouyankhodabakhsh">
+        <createTable tableName="author">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="birth_date" type="datetime"/>
+            <column name="email" type="text">
+                <constraints checkConstraint="CHECK (email ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$')"/>
+            </column>
+            <column name="user_id" type="bigserial"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="0003_role_table" author="pouyankhodabakhsh">
+        <preConditions>
+            <not>
+                <tableExists tableName="role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="role">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_name" type="varchar(32)"/>
+            <column name="create_date" type="datetime"/>
+        </createTable>
+        <createIndex tableName="role" indexName="IDX_Role_Id">
+            <column name="id" type="bigserial"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="0004_users_table" author="Pouyan Khodabakhsh">
+        <preConditions>
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="varchar(32)"/>
+            <column name="create_date" type="datetime"/>
+        </createTable>
+        <createIndex tableName="users" indexName="IDX_User_Id">
+            <column name="id" type="bigserial"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="0005_user_role_table" author="pouyankhodabakhsh">
+        <createTable tableName="user_role">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user_role"
+                       columnNames="user_id, role_id"
+                       constraintName="pk_user_role"/>
+    </changeSet>
+    <changeSet id="0006_insert_default_roles" author="pouyankhodabakhsh">
+        <insert tableName="role">
+            <column name="id" valueSequenceNext="role_id_seq"/>
+            <column name="role_name" value="ROLE_AUTHOR"/>
+            <column name="create_date" valueDate="${now}"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueSequenceNext="role_id_seq"/>
+            <column name="role_name" value="ROLE_ADMIN"/>
+            <column name="create_date" valueDate="${now}"/>
+        </insert>
+    </changeSet>
+    <changeSet id="0007_insert_admin_user" author="pouyankhodabakhsh">
+        <insert tableName="users">
+            <column name="id" valueSequenceNext="users_id_seq"/>
+            <column name="user_name" value="admin"/>
+            <column name="password" value="test123"/>
+            <column name="state" value="UNBLOCKED"/>
+            <column name="create_date" valueDate="${now}"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="role_id" valueSequenceCurrent="role_id_seq"/>
+            <column name="user_id" valueSequenceCurrent="users_id_seq"/>
+        </insert>
+    </changeSet>
+    <changeSet id="0008_foreignKey_constraints" author="pouyankhodabakhsh">
+        <addForeignKeyConstraint baseTableName="book" baseColumnNames="author_id" constraintName="fk_book_author"
+                                 referencedTableName="author"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="author" baseColumnNames="user_id" constraintName="fk_author_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_role"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_role"
+                                 baseColumnNames="role_id"
+                                 constraintName="fk_role_id"
+                                 referencedTableName="role"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
