@@ -11,13 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
 @Table(name = "book")
 public class Book implements Serializable {
-    private static final long serialVersionUID = -8798293106609139002L;
+    @Serial
+    private static final long serialVersionUID = 204738752625195839L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -37,9 +39,18 @@ public class Book implements Serializable {
     @Column(name = "price")
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "author_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private Author author;
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public Book setAuthor(Author author) {
+        this.author = author;
+        return this;
+    }
 
     public Long getId() {
         return id;
@@ -83,15 +94,6 @@ public class Book implements Serializable {
 
     public Book setPrice(Integer price) {
         this.price = price;
-        return this;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public Book setAuthor(Author author) {
-        this.author = author;
         return this;
     }
 

@@ -11,7 +11,7 @@ import java.time.Instant;
  */
 @Data
 @Builder
-public class BookRespone implements Serializable {
+public class BookResponse implements Serializable {
     private final String title;
     private final String description;
     private final Instant publishingDate;

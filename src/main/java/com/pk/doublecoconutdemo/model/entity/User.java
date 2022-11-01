@@ -1,17 +1,28 @@
 package com.pk.doublecoconutdemo.model.entity;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+
+    @Serial
     private static final long serialVersionUID = -5294718389515750297L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +32,26 @@ public class User implements Serializable {
     @Column(name = "user_name", nullable = false)
     private String userName;
 
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new LinkedHashSet<>();
+
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "state", length = 32)
-    private String state;
-
     @Column(name = "create_date")
     private Instant createDate;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public User setRoles(Set<Role> roles) {
+        this.roles = roles;
+        return this;
+    }
 
     public Long getId() {
         return id;
@@ -57,15 +80,6 @@ public class User implements Serializable {
         return this;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public User setState(String state) {
-        this.state = state;
-        return this;
-    }
-
     public Instant getCreateDate() {
         return createDate;
     }
@@ -75,4 +89,16 @@ public class User implements Serializable {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

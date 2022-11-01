@@ -15,20 +15,17 @@ import java.time.Instant;
 @Entity
 @Table(name = "author")
 public class Author implements Serializable {
+
     @Serial
-    private static final long serialVersionUID = -4472526713717788784L;
+    private static final long serialVersionUID = 2703818222116851991L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "name")
     @Type(type = "org.hibernate.type.TextType")
-    private String firstName;
-
-    @Column(name = "last_name")
-    @Type(type = "org.hibernate.type.TextType")
-    private String lastName;
+    private String name;
 
     @Column(name = "birth_date")
     private Instant birthDate;
@@ -46,21 +43,12 @@ public class Author implements Serializable {
         return this;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public Author setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Author setLastName(String lastName) {
-        this.lastName = lastName;
+    public Author setName(String name) {
+        this.name = name;
         return this;
     }
 

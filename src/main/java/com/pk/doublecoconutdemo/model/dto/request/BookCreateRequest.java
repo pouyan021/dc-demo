@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- * A DTO for the {@link com.pk.doublecoconutdemo.model.entity.Book} entity
+// * A DTO for the {@link com.pk.doublecoconutdemo.model.entity.Book} entity
  */
 @Data
 @Builder

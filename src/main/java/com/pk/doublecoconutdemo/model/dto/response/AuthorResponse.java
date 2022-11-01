@@ -12,8 +12,7 @@ import java.time.Instant;
 @Data
 @Builder
 public class AuthorResponse implements Serializable {
-    private final String firstName;
-    private final String lastName;
+    private final String name;
     private final Instant birthDate;
     private final String email;
 }

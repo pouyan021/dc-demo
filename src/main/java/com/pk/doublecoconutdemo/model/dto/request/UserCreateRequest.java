@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.pk.doublecoconutdemo.model.entity.User} entity
+// * A DTO for the {@link com.pk.doublecoconutdemo.model.entity.User} entity
  */
 @Data
 @Builder
