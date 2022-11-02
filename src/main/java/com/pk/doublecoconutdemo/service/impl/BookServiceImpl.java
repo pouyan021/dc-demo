@@ -6,10 +6,13 @@ import com.pk.doublecoconutdemo.model.entity.Book;
 import com.pk.doublecoconutdemo.model.repository.BookRepository;
 import com.pk.doublecoconutdemo.service.BookService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -42,5 +45,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> getBookByTitle(String title) {
         return bookRepository.findByTitle(title);
+    }
+
+    @Override
+    public List<Book> getAll() {
+       return  bookRepository.findAll();
     }
 }
