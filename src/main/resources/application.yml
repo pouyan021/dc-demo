@@ -15,5 +15,5 @@ spring:
     show-sql: true
     open-in-view: false
   liquibase:
-    change-log: classpath:/db/changelog/31-01-changelog.xml
+    change-log: classpath:/db/changelog/02-01-master-changelog.xml
 
