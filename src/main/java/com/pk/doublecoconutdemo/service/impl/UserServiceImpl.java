@@ -5,11 +5,13 @@ import com.pk.doublecoconutdemo.model.entity.Role;
 import com.pk.doublecoconutdemo.model.entity.User;
 import com.pk.doublecoconutdemo.model.repository.UserRepository;
 import com.pk.doublecoconutdemo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,21 +20,26 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public User save(User user) throws UserAlreadyExistException {
         Optional<User> savedUser = userRepository.findByUserName(user.getUserName());
         if (savedUser.isPresent()) {
             throw new UserAlreadyExistException("The user: " + user.getUserName() + " already exists.");
         }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public void remove(int userId) {
-
+    public void remove(Long userId) {
+        userRepository.deleteById(userId);
     }
 
     @Override

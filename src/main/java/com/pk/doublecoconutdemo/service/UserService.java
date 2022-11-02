@@ -9,7 +9,7 @@ public interface UserService {
 
     User save(User user) throws UserAlreadyExistException;
 
-    void remove(int userId);
+    void remove(Long userId);
 
     Optional<User> getbyUserName(String userName);
 
