@@ -6,12 +6,14 @@ import com.pk.doublecoconutdemo.model.entity.Author;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface AuthorMapper {
-
-    AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
 
     AuthorResponse authorToAuthorResponse(Author author);
 
     Author authorRequestToAuthor(AuthorCreateRequest request);
+
+   List<AuthorResponse> map(List<Author> authors);
 }
