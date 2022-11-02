@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,11 +34,16 @@ public class AuthorController {
         this.authorMapper = authorMapper;
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<AuthorResponse> getAuthorByName(@RequestParam("name") String name) {
         Optional<Author> author = authorService.getAuthorByName(name);
         return author.map(value -> ResponseEntity.ok(authorMapper.authorToAuthorResponse(value)))
                 .orElseGet(() -> ResponseEntity.noContent().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AuthorResponse>> getAll() {
+        return ResponseEntity.ok(authorMapper.map(authorService.getAll()));
     }
 
     @PostMapping("/create")
