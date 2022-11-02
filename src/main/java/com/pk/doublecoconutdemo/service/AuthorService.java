@@ -4,6 +4,7 @@ import com.pk.doublecoconutdemo.exception.ResourceAlreadyExistException;
 import com.pk.doublecoconutdemo.exception.ResourceNotExists;
 import com.pk.doublecoconutdemo.model.entity.Author;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AuthorService {
@@ -14,4 +15,6 @@ public interface AuthorService {
     void remove(Long authorId);
 
     Optional<Author> getAuthorByName(String name);
+
+    List<Author> getAll();
 }

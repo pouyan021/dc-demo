@@ -8,6 +8,7 @@ import com.pk.doublecoconutdemo.service.AuthorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +45,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> getAuthorByName(String name) {
         return authorRepository.findByName(name);
+    }
+
+    @Override
+    public List<Author> getAll() {
+        return authorRepository.findAll();
     }
 }
