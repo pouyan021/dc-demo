@@ -16,4 +16,5 @@ public class BookCreateRequest implements Serializable {
     private final String description;
     private final Instant publishingDate;
     private final Integer price;
+    private final String authorName;
 }
