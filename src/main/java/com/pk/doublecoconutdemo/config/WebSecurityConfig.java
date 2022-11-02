@@ -22,7 +22,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
     @Bean
@@ -38,6 +38,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .antMatchers(HttpMethod.GET, "/**").permitAll()
                         .antMatchers("/api/login/**").permitAll()
+                        .antMatchers("/api/user/sign-up").permitAll()
+                        .antMatchers("/api/book/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_AUTHOR")
+                        .antMatchers("/api/author/**").hasAnyAuthority("ROLE_ADMIN")
                         .anyRequest()
                         .authenticated())
                 .addFilter(authenticationFilter)
