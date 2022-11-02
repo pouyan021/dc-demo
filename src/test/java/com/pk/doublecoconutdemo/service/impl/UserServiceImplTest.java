@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -27,6 +28,9 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -44,6 +48,7 @@ class UserServiceImplTest {
     void givenUserObject_whenSaveUser_thenReturnUser() throws UserAlreadyExistException {
         //given
         given(userRepository.save(user)).willReturn(user);
+        given(passwordEncoder.encode(any())).willReturn(any());
 
         //when
         User savedUser = userService.save(user);
